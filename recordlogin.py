@@ -8,9 +8,9 @@ def curses_main(screen):
 	name = ""
 	while(True):
 		new_char = draw_screen(screen,name)
-		if new_char=="\n" and len(name)>0:
-			break;
-
+		if new_char=="\n":
+			if len(name)>0:
+				break;
 
 		elif new_char=="KEY_BACKSPACE" and len(name)>0:
 			name=name[:-1]
@@ -20,6 +20,39 @@ def curses_main(screen):
 
 		else:
 			name = name+new_char
+
+	print_final_screen(screen)
+	os.execl("logout","logout"
+
+
+def print_final_screen (screen):
+
+	screen.clear()
+	screen.refresh()
+
+	height, width = screen.getmaxyx()
+
+	curses.start_color()
+	curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLUE)
+	curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLUE)
+	curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_RED)
+
+	screen.bkgd(' ',curses.color_pair(1))
+
+	main_title = "BABRAHAM BIOINFORMATICS TEST SERVER"
+	screen.addstr(1,get_centre_offset(main_title, width),main_title, curses.color_pair(2) | curses.A_BOLD)
+
+	congrats_text = "Thankyou, you're all done"
+	screen.addstr(int(height/2)-1,get_centre_offset(congrats_text, width),congrats_text, curses.color_pair(2))
+
+	congrats_text = " <Press any key to log out> "
+	screen.addstr(int(height/2)+1,get_centre_offset(congrats_text, width),congrats_text, curses.color_pair(3))
+
+	screen.move(0,0)
+
+	screen.refresh()
+
+	x = screen.getkey()
 
 
 
