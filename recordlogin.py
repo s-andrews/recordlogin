@@ -18,7 +18,8 @@ def curses_main(screen):
 		elif new_char.startswith("KEY"):
 			continue
 
-		name = name+new_char
+		else:
+			name = name+new_char
 
 
 
@@ -49,6 +50,9 @@ def draw_screen(screen, name):
 	screen.addstr(10,get_centre_offset(user_name, width),user_name, curses.color_pair(3))
 
 	# Put the cursor where they're going to have to type
+	cursor_pos = get_centre_offset(user_name, width)+len(name)
+	screen.move(10,cursor_pos)
+
 
 	screen.refresh()
 
