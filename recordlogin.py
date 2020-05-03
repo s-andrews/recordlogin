@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import curses
-import sys
 import os
+from datetime import datetime
 
 def curses_main(screen):
 
@@ -22,7 +22,36 @@ def curses_main(screen):
 			name = name+new_char
 
 	print_final_screen(screen)
-	os.execl("logout","logout"
+	save_name(name)
+	logout(screen)
+
+
+def save_name(name):
+	# We can't use ~ in a n open statement directly.  We have
+	# to manually expand it.
+	with open(os.path.expanduser("~")+"/.recorded_logins.txt","a") as file:
+		file.write(name)
+		file.write("\t")
+		file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+		file.write("\n")
+
+def logout(screen):
+	screen.clear()
+	screen.refresh()
+
+	curses.start_color()
+	curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_BLACK)
+
+	screen.bkgd(' ',curses.color_pair(1))
+
+	screen.refresh()
+
+	# Logging out is tricky.  We can't actually call logout or exit
+	# as those are shell builtins and not commands.  The hack we use
+	# is simply to kill the parent of this process which will always be
+	# the shell which launched it, and this will then log us out.
+
+	os.kill(os.getppid(),9)
 
 
 def print_final_screen (screen):
