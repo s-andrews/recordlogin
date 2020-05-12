@@ -17,6 +17,8 @@ From a blank EC2 default image you can run:
 ```
 sudo yum -y install git python3
 
+sudo timedatectl set-timezone Europe/London
+
 git clone https://github.com/s-andrews/recordlogin.git
 
 echo "~/recordlogin/recordlogin.py" >> ~/.bash_profile
